@@ -47,7 +47,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener{
 	/** 绳子的图片*/
 	private ImageView img_curtain_rope;
 	/** 广告的图片*/
-	private ImageView img_curtain_ad;
+	private View img_curtain_ad;
 	/** 上升动画时间 */
 	private int upDuration = 1000;
 	/** 下落动画时间 */
@@ -79,7 +79,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener{
 		// 背景设置成透明
 		this.setBackgroundColor(Color.argb(0, 0, 0, 0));
 		final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
-		img_curtain_ad = (ImageView)view.findViewById(R.id.img_curtain_ad);
+		img_curtain_ad = (View)view.findViewById(R.id.img_curtain_ad);
 		img_curtain_rope = (ImageView)view.findViewById(R.id.img_curtain_rope);
 		addView(view);
 		img_curtain_ad.post(new Runnable() {
@@ -87,11 +87,12 @@ public class CurtainView extends RelativeLayout implements OnTouchListener{
 			@Override
 			public void run() {
 				curtainHeigh  = img_curtain_ad.getHeight();
-				Log.d(TAG, "curtainHeigh= " + curtainHeigh);
+				Log.d(TAG, "curtainHeigh= " + curtainHeigh+" mScreenHeigh="+mScreenHeigh+" img_curtain_rope.heigeht="+img_curtain_rope.getHeight());
 				CurtainView.this.scrollTo(0, curtainHeigh);
 				//注意scrollBy和scrollTo的区别
 			}
 		});
+		img_curtain_ad.setOnTouchListener(this);
 		img_curtain_rope.setOnTouchListener(this);
 	}
 

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
-    <ImageView
-        android:id="@+id/img_curtain_ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/gg1" />
+    android:layout_height="wrap_content"
+    >
 
     <ImageView
         android:id="@+id/img_curtain_rope"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/img_curtain_ad"
+        android:layout_alignParentBottom="true"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
-        android:paddingBottom="5dip"
+        android:paddingBottom="15dip"
+        android:paddingTop="15dp"
         android:clipChildren="false"
+        android:background="#ffffff"
         android:src="@drawable/iom_live_qb" />
+
+    <ImageView
+        android:id="@+id/img_curtain_ad"
+        android:layout_above="@+id/img_curtain_rope"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/item2"
+        android:background="#99ffaaff" />
+
+
 
 </RelativeLayout>
