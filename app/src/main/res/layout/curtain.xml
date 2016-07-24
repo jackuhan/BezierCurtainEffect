@@ -4,28 +4,37 @@
     android:layout_height="wrap_content"
     >
 
+  <com.example.curtaineffect.view.JellyViewFrameLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/jelly"
+      android:layout_alignParentBottom="true"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
+
     <ImageView
         android:id="@+id/img_curtain_rope"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingBottom="15dip"
-        android:paddingTop="15dp"
         android:clipChildren="false"
-        android:background="#ffffff"
-        android:src="@drawable/iom_live_qb" />
+        android:paddingBottom="35dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/iom_live_qb"
+        />
 
-    <ImageView
-        android:id="@+id/img_curtain_ad"
-        android:layout_above="@+id/img_curtain_rope"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/item2"
-        android:background="#99ffaaff" />
 
+  </com.example.curtaineffect.view.JellyViewFrameLayout>
+
+  <ImageView
+      android:id="@+id/img_curtain_ad"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/jelly"
+      android:background="#99ffaaff"
+      android:scaleType="fitXY"
+      android:src="@drawable/item2"
+      />
 
 
 </RelativeLayout>
