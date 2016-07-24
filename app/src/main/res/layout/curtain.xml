@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipChildren="false"
-        android:paddingBottom="35dp"
+        android:paddingBottom="25dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:src="@drawable/iom_live_qb"

@@ -98,7 +98,8 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             + " img_curtain_rope.heigeht="
             + img_curtain_rope.getHeight());
         CurtainView.this.scrollTo(0, curtainHeigh);
-        jellyView.setMinimumHeight(10);
+        jellyView.setMinimumHeight(0);
+        jellyView.setJellyHeight(jellyView.getHeight());
         jellyView.setJellyColor(mJellyColor);
         //注意scrollBy和scrollTo的区别
       }
@@ -126,6 +127,10 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   @Override public void computeScroll() {
     //判断是否还在滚动，还在滚动为true
     if (mScroller.computeScrollOffset()) {
+      if (((int) (img_curtain_rope.getHeight())) >= curtainHeigh - mScroller.getCurrY()) {
+        jellyView.setMinimumHeight((int) curtainHeigh - mScroller.getCurrY());
+        jellyView.invalidate();
+      }
       scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
       //更新界面
       postInvalidate();
@@ -162,7 +167,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                 //jellyView.setMinimumHeight((int) (headerHeight));
                 Log.e("hanjiahu", "setJellyHeight=" + scrollY);
                 if (((int) (img_curtain_rope.getHeight())) >= scrollY) {
-                  jellyView.setJellyHeight((int) scrollY);
+                  jellyView.setMinimumHeight((int) scrollY);
                   jellyView.invalidate();
                 }
               }
@@ -189,13 +194,13 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             }
           } else {
             // 向下滑动
+            jellyView.setMinimumHeight(img_curtain_rope.getHeight());
+            jellyView.invalidate();
             if (scrollY > curtainHeigh / 2) {
               // 向上滑动超过半个屏幕高的时候 开启向上消失动画
               startMoveAnim(this.getScrollY(), -this.getScrollY(), upDuration);
               isOpen = true;
             } else {
-              jellyView.setJellyHeight(img_curtain_rope.getHeight());
-              jellyView.invalidate();
               startMoveAnim(this.getScrollY(), (curtainHeigh - this.getScrollY()), upDuration);
               isOpen = false;
             }

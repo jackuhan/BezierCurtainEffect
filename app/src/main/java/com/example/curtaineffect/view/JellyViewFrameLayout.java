@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -59,8 +60,12 @@ public class JellyViewFrameLayout extends FrameLayout {
         int measuredWidth = getMeasuredWidth();
         path.reset();
         path.lineTo(0, minimumHeight);
-        path.quadTo(measuredWidth / 2, minimumHeight + jellyHeight, measuredWidth, minimumHeight);
+        path.quadTo(measuredWidth / 2, jellyHeight, measuredWidth, minimumHeight);
         path.lineTo(measuredWidth, 0);
+        Log.d("hanjiahuhan", "minimumHeight= "
+            + minimumHeight
+            + " jellyHeight="
+            + jellyHeight);
         canvas.drawPath(path, paint);
     }
 
