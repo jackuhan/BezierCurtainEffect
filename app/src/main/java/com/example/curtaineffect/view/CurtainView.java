@@ -19,8 +19,8 @@ import com.example.curtaineffect.tools.BaseTools;
 /**
  * 窗帘拉开自定义布局
  *
- * @author Ra
- *         blog : http://blog.csdn.net/vipzjyno1/
+ * create by Ra blog : http://blog.csdn.net/vipzjyno1/
+ * modified by Hanjiahu
  */
 public class CurtainView extends RelativeLayout implements OnTouchListener {
   private static String TAG = "CurtainView";
@@ -53,7 +53,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   private int upDuration = 1000;
   /** 下落动画时间 */
   private int downDuration = 500;
-  JellyViewFrameLayout jellyView;
+  BezierViewFrameLayout jellyView;
   private int mJellyColor;
 
   public CurtainView(Context context) {
@@ -85,7 +85,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
     img_curtain_ad = (View) view.findViewById(R.id.img_curtain_ad);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
-    jellyView = (JellyViewFrameLayout) view.findViewById(R.id.jelly);
+    jellyView = (BezierViewFrameLayout) view.findViewById(R.id.jelly);
     addView(view);
     img_curtain_ad.post(new Runnable() {
 

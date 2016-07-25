@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     >
 
-  <com.example.curtaineffect.view.JellyViewFrameLayout
+  <com.example.curtaineffect.view.BezierViewFrameLayout
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/jelly"
       android:layout_alignParentBottom="true"
@@ -24,7 +24,7 @@
         />
 
 
-  </com.example.curtaineffect.view.JellyViewFrameLayout>
+  </com.example.curtaineffect.view.BezierViewFrameLayout>
 
   <ImageView
       android:id="@+id/img_curtain_ad"
