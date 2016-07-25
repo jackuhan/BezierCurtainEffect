@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import com.example.curtaineffect.R;
 
 /**
@@ -16,11 +15,11 @@ import com.example.curtaineffect.R;
  *
  * created by Hanjiahu
  */
-public class OutCurtainLayout extends RelativeLayout implements CurtainView.OnPullDownOffsetListener {
+public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.OnPullDownOffsetListener {
   private static String TAG = "CurtainView";
   private Context mContext;
   private ImageView header;
-  private CurtainView curtainView;
+  private CurtainDownView curtainView;
   private CurtainTopView curtainTopView;
   //private RelativeLayout goodsLayout;
 
@@ -50,10 +49,26 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainView.OnPu
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = LayoutInflater.from(mContext).inflate(R.layout.out_curtain, null);
     header = (ImageView) view.findViewById(R.id.header);
-    curtainView = (CurtainView) view.findViewById(R.id.curtain_view);
+    curtainView = (CurtainDownView) view.findViewById(R.id.curtain_view);
     curtainTopView = (CurtainTopView) view.findViewById(R.id.curtain_top_view);
     addView(view);
     curtainView.setOnPullDownOffsetListener(this);
+    curtainTopView.setOnOutCurtainListener(new CurtainTopView.OnOutCurtainListener() {
+      @Override public void onPullDownOffset(float offset) {
+
+      }
+
+      @Override public void isOpen(boolean bOpen) {
+        Log.w("上层窗帘回调","isOpen= "+bOpen);
+        if(bOpen){
+          //header.setVisibility(GONE);
+          //curtainTopView.openCurtain(10);
+        } else {
+          //header.setVisibility(VISIBLE);
+          curtainView.closeCurtain(10);
+        }
+      }
+    });
     view.findViewById(R.id.header).setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
         curtainTopView.openCurtain(500);
@@ -79,12 +94,12 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainView.OnPu
   }
 
   public void isOpen(boolean bOpen){
-    //if(bOpen){
-    //  header.setVisibility(GONE);
-    //  goodsLayout.setVisibility(VISIBLE);
-    //} else {
-    //  header.setVisibility(VISIBLE);
-    //  goodsLayout.setVisibility(GONE);
-    //}
+    Log.e("下层窗帘回调","isOpen= "+bOpen);
+    if(bOpen){
+      //header.setVisibility(GONE);
+      curtainTopView.openCurtain(10);
+    } else {
+      //header.setVisibility(VISIBLE);
+    }
   }
 }

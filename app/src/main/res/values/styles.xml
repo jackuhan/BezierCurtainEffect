@@ -18,7 +18,7 @@
          <item name="android:windowNoTitle">true</item>
     </style>
 
-    <declare-styleable name="CurtainView">
+    <declare-styleable name="CurtainDownView">
         <attr format="dimension" name="touchScrollHeight"/>
         <attr format="color" name="jellyColor"/>
     </declare-styleable>

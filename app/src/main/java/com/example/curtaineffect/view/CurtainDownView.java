@@ -25,7 +25,7 @@ import com.example.curtaineffect.tools.Device;
  * create by Ra blog : http://blog.csdn.net/vipzjyno1/
  * modified by Hanjiahu
  */
-public class CurtainView extends RelativeLayout implements OnTouchListener {
+public class CurtainDownView extends RelativeLayout implements OnTouchListener {
   private static String TAG = "CurtainView";
   private Context mContext;
   private Scroller mScroller;
@@ -63,17 +63,17 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     touchScrollHeight = mTouchScrollHeight;
   }
 
-  public CurtainView(Context context) {
+  public CurtainDownView(Context context) {
     super(context);
     init(context, null);
   }
 
-  public CurtainView(Context context, AttributeSet attrs, int defStyle) {
+  public CurtainDownView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context, attrs);
   }
 
-  public CurtainView(Context context, AttributeSet attrs) {
+  public CurtainDownView(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }
@@ -82,9 +82,9 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   private void init(Context context, AttributeSet attrs) {
     this.mContext = context;
     if (null != attrs) {
-      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CurtainView);
-      touchScrollHeight = ta.getDimension(R.styleable.CurtainView_touchScrollHeight, Device.sp2px(getResources(), 75));
-      mJellyColor = ta.getColor(R.styleable.CurtainView_jellyColor, getResources().getColor(android.R.color.white));
+      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CurtainDownView);
+      touchScrollHeight = ta.getDimension(R.styleable.CurtainDownView_touchScrollHeight, Device.sp2px(getResources(), 75));
+      mJellyColor = ta.getColor(R.styleable.CurtainDownView_jellyColor, getResources().getColor(android.R.color.white));
     } else {
       touchScrollHeight = Device.sp2px(getResources(), 75);
       mJellyColor = getResources().getColor(android.R.color.white);
@@ -112,7 +112,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             + mScreenHeigh
             + " img_curtain_rope.heigeht="
             + img_curtain_rope.getHeight());
-        CurtainView.this.scrollTo(0, curtainHeigh);
+        CurtainDownView.this.scrollTo(0, curtainHeigh);
         bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
         Log.d("ttttttttt", "" + (tv_curtain_rope.getHeight()));
         bezierViewFrameLayout.setJellyHeight(bezierViewFrameLayout.getHeight());
@@ -126,16 +126,16 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
 
   public void closeCurtain(int mDuration) {
     isOpen = false;
-    CurtainView.this.startMoveAnim(0, curtainHeigh, mDuration );
+    CurtainDownView.this.startMoveAnim(0, curtainHeigh, mDuration );
     //CurtainTopView.this.scrollTo(0, curtainHeigh);
-    //bezierViewFrameLayout.setVisibility(INVISIBLE);
+    bezierViewFrameLayout.setVisibility(VISIBLE);
   }
 
   public void openCurtain(int mDuration) {
     isOpen = true;
-    CurtainView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
+    CurtainDownView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
     //CurtainTopView.this.scrollTo(0, -curtainHeigh);
-    //bezierViewFrameLayout.setVisibility(VISIBLE);
+    bezierViewFrameLayout.setVisibility(INVISIBLE);
   }
 
   /**
@@ -148,6 +148,29 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     isMove = true;
     mScroller.startScroll(0, startY, 0, dy, duration);
     invalidate();//通知UI线程的更新
+    if (dy > 0) {
+      //关闭
+      bezierViewFrameLayout.setVisibility(VISIBLE);
+      if (null != mOnPullDownOffsetListener) {
+        mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
+        this.postDelayed(new Runnable() {
+          @Override public void run() {
+            mOnPullDownOffsetListener.isOpen(false);
+          }
+        },downDuration);
+      }
+    } else {
+      //打开
+      bezierViewFrameLayout.setVisibility(INVISIBLE);
+      if (null != mOnPullDownOffsetListener) {
+        mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
+        this.postDelayed(new Runnable() {
+          @Override public void run() {
+            mOnPullDownOffsetListener.isOpen(true);
+          }
+        },downDuration);
+      }
+    }
   }
 
   /**
@@ -165,18 +188,6 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
       Log.d("ttttttttt点击下", "" + (bezierViewFrameLayout.getHeight()));
       beserViewOpen();
       isOpen = true;
-    }
-  }
-
-  private void beserViewOpen() {
-    bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
-    bezierViewFrameLayout.invalidate();
-    if(null!=mOnPullDownOffsetListener) {
-      this.postDelayed(new Runnable() {
-        @Override public void run() {
-          mOnPullDownOffsetListener.isOpen(true);
-        }
-      }, upDuration);
     }
   }
 
@@ -250,25 +261,25 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                 isOpen = false;
                 beserViewClose();
                 Log.d("ttttttttt向上滑动", "" + (tv_curtain_rope.getHeight()));
-                if(null!=mOnPullDownOffsetListener) {
-                  this.postDelayed(new Runnable() {
-                    @Override public void run() {
-                      mOnPullDownOffsetListener.isOpen(false);
-                    }
-                  }, upDuration);
-                }
+                //if(null!=mOnPullDownOffsetListener) {
+                //  this.postDelayed(new Runnable() {
+                //    @Override public void run() {
+                //      mOnPullDownOffsetListener.isOpen(false);
+                //    }
+                //  }, upDuration);
+                //}
               } else {
                 startMoveAnim(this.getScrollY(), -this.getScrollY(), upDuration);
                 isOpen = true;
                 beserViewOpen();
                 Log.d("ttttttttt向上滑动", "" + (bezierViewFrameLayout.getHeight()));
-                if(null!=mOnPullDownOffsetListener) {
-                  this.postDelayed(new Runnable() {
-                    @Override public void run() {
-                      mOnPullDownOffsetListener.isOpen(true);
-                    }
-                  }, upDuration);
-                }
+                //if(null!=mOnPullDownOffsetListener) {
+                //  this.postDelayed(new Runnable() {
+                //    @Override public void run() {
+                //      mOnPullDownOffsetListener.isOpen(true);
+                //    }
+                //  }, upDuration);
+                //}
               }
             }
           } else {
@@ -279,27 +290,27 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
               isOpen = true;
               beserViewOpen();
               Log.d("ttttttttt向下滑动", "" + (bezierViewFrameLayout.getHeight()));
-              if (null != mOnPullDownOffsetListener) {
-                mOnPullDownOffsetListener.onPullDownOffset(0);
-                this.postDelayed(new Runnable() {
-                  @Override public void run() {
-                    mOnPullDownOffsetListener.isOpen(true);
-                  }
-                },upDuration);
-              }
+              //if (null != mOnPullDownOffsetListener) {
+              //  mOnPullDownOffsetListener.onPullDownOffset(0);
+              //  this.postDelayed(new Runnable() {
+              //    @Override public void run() {
+              //      mOnPullDownOffsetListener.isOpen(true);
+              //    }
+              //  },upDuration);
+              //}
             } else {
               startMoveAnim(this.getScrollY(), (curtainHeigh - this.getScrollY()), upDuration);
               isOpen = false;
               beserViewClose();
               Log.d("ttttttttt向下滑动", "" + (tv_curtain_rope.getHeight()));
-              if (null != mOnPullDownOffsetListener) {
-                mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
-                this.postDelayed(new Runnable() {
-                  @Override public void run() {
-                    mOnPullDownOffsetListener.isOpen(false);
-                  }
-                },upDuration);
-              }
+              //if (null != mOnPullDownOffsetListener) {
+              //  mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
+              //  this.postDelayed(new Runnable() {
+              //    @Override public void run() {
+              //      mOnPullDownOffsetListener.isOpen(false);
+              //    }
+              //  },upDuration);
+              //}
             }
           }
           break;
@@ -310,16 +321,28 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     return false;
   }
 
+  private void beserViewOpen() {
+    bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
+    bezierViewFrameLayout.invalidate();
+    //if(null!=mOnPullDownOffsetListener) {
+    //  this.postDelayed(new Runnable() {
+    //    @Override public void run() {
+    //      mOnPullDownOffsetListener.isOpen(true);
+    //    }
+    //  }, upDuration);
+    //}
+  }
+
   private void beserViewClose() {
     bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
     bezierViewFrameLayout.invalidate();
-    if(null!=mOnPullDownOffsetListener) {
-      this.postDelayed(new Runnable() {
-        @Override public void run() {
-          mOnPullDownOffsetListener.isOpen(false);
-        }
-      }, upDuration);
-    }
+    //if(null!=mOnPullDownOffsetListener) {
+    //  this.postDelayed(new Runnable() {
+    //    @Override public void run() {
+    //      mOnPullDownOffsetListener.isOpen(false);
+    //    }
+    //  }, upDuration);
+    //}
   }
 
   public interface OnPullDownOffsetListener {
