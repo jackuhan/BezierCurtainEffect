@@ -25,7 +25,7 @@ import com.example.curtaineffect.tools.Device;
  * create by Ra blog : http://blog.csdn.net/vipzjyno1/
  * modified by Hanjiahu
  */
-public class CurtainDownView extends RelativeLayout implements OnTouchListener {
+public class CurtainNormalView extends RelativeLayout implements OnTouchListener {
   private static String TAG = "CurtainView";
   private Context mContext;
   private Scroller mScroller;
@@ -63,17 +63,17 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     touchScrollHeight = mTouchScrollHeight;
   }
 
-  public CurtainDownView(Context context) {
+  public CurtainNormalView(Context context) {
     super(context);
     init(context, null);
   }
 
-  public CurtainDownView(Context context, AttributeSet attrs, int defStyle) {
+  public CurtainNormalView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context, attrs);
   }
 
-  public CurtainDownView(Context context, AttributeSet attrs) {
+  public CurtainNormalView(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }
@@ -112,7 +112,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
             + mScreenHeigh
             + " img_curtain_rope.heigeht="
             + img_curtain_rope.getHeight());
-        CurtainDownView.this.scrollTo(0, curtainHeigh);
+        CurtainNormalView.this.scrollTo(0, curtainHeigh);
         bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
         Log.d("ttttttttt", "" + (tv_curtain_rope.getHeight()));
         bezierViewFrameLayout.setJellyHeight(bezierViewFrameLayout.getHeight());
@@ -126,16 +126,14 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
 
   public void closeCurtain(int mDuration) {
     isOpen = false;
-    CurtainDownView.this.startMoveAnim(0, curtainHeigh, mDuration );
+    CurtainNormalView.this.startMoveAnim(0, curtainHeigh, mDuration );
     //CurtainTopView.this.scrollTo(0, curtainHeigh);
-    bezierViewFrameLayout.setVisibility(VISIBLE);
   }
 
   public void openCurtain(int mDuration) {
     isOpen = true;
-    CurtainDownView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
+    CurtainNormalView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
     //CurtainTopView.this.scrollTo(0, -curtainHeigh);
-    bezierViewFrameLayout.setVisibility(INVISIBLE);
   }
 
   /**
@@ -150,7 +148,6 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     invalidate();//通知UI线程的更新
     if (dy > 0) {
       //关闭
-      bezierViewFrameLayout.setVisibility(VISIBLE);
       if (null != mOnPullDownOffsetListener) {
         mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
@@ -161,7 +158,6 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
       }
     } else {
       //打开
-      bezierViewFrameLayout.setVisibility(INVISIBLE);
       if (null != mOnPullDownOffsetListener) {
         mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
