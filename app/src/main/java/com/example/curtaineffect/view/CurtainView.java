@@ -1,6 +1,7 @@
 package com.example.curtaineffect.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -13,8 +14,10 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
+import android.widget.TextView;
 import com.example.curtaineffect.R;
 import com.example.curtaineffect.tools.BaseTools;
+import com.example.curtaineffect.tools.Device;
 
 /**
  * 窗帘拉开自定义布局
@@ -25,11 +28,8 @@ import com.example.curtaineffect.tools.BaseTools;
 public class CurtainView extends RelativeLayout implements OnTouchListener {
   private static String TAG = "CurtainView";
   private Context mContext;
-  /** Scroller 拖动类 */
   private Scroller mScroller;
-  /** 屏幕高度 */
   private int mScreenHeigh = 0;
-  /** 屏幕宽度 */
   private int mScreenWidth = 0;
   /** 点击时候Y的坐标 */
   private int downY = 0;
@@ -47,34 +47,48 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   private boolean isMove = false;
   /** 绳子的图片 */
   private ImageView img_curtain_rope;
+  private TextView tv_curtain_rope;
   /** 广告的图片 */
   private View img_curtain_ad;
   /** 上升动画时间 */
   private int upDuration = 1000;
   /** 下落动画时间 */
   private int downDuration = 500;
-  BezierViewFrameLayout jellyView;
+  BezierViewFrameLayout bezierViewFrameLayout;
   private int mJellyColor;
+  //拖动150像素有效滑动
+  private float touchScrollHeight = 150;
+
+  public void setTouchScrollHeight(int mTouchScrollHeight){
+    touchScrollHeight = mTouchScrollHeight;
+  }
 
   public CurtainView(Context context) {
     super(context);
-    init(context);
+    init(context,null);
   }
 
   public CurtainView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
-    init(context);
+    init(context,attrs);
   }
 
   public CurtainView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init(context);
+    init(context,attrs);
   }
 
   /** 初始化 */
-  private void init(Context context) {
+  private void init(Context context,AttributeSet attrs) {
     this.mContext = context;
-    mJellyColor = getResources().getColor(android.R.color.holo_blue_bright);
+    if (null != attrs) {
+      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CurtainView);
+      touchScrollHeight = ta.getDimension(R.styleable.CurtainView_touchScrollHeight,  Device.sp2px(getResources(),75));
+      mJellyColor = ta.getColor(R.styleable.CurtainView_jellyColor,getResources().getColor(android.R.color.white));
+    } else {
+      touchScrollHeight = Device.sp2px(getResources(),75);
+      mJellyColor = getResources().getColor(android.R.color.white);
+    }
     //Interpolator 设置为有反弹效果的  （Bounce：反弹）
     Interpolator interpolator = new BounceInterpolator();
     mScroller = new Scroller(context, interpolator);
@@ -85,7 +99,8 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
     img_curtain_ad = (View) view.findViewById(R.id.img_curtain_ad);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
-    jellyView = (BezierViewFrameLayout) view.findViewById(R.id.jelly);
+    tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
+    bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
     addView(view);
     img_curtain_ad.post(new Runnable() {
 
@@ -98,14 +113,15 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             + " img_curtain_rope.heigeht="
             + img_curtain_rope.getHeight());
         CurtainView.this.scrollTo(0, curtainHeigh);
-        jellyView.setMinimumHeight(0);
-        jellyView.setJellyHeight(jellyView.getHeight());
-        jellyView.setJellyColor(mJellyColor);
+        bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight() );
+        Log.d("ttttttttt",""+(tv_curtain_rope.getHeight()));
+        bezierViewFrameLayout.setJellyHeight(bezierViewFrameLayout.getHeight());
+        bezierViewFrameLayout.setJellyColor(mJellyColor);
         //注意scrollBy和scrollTo的区别
       }
     });
     img_curtain_ad.setOnTouchListener(this);
-    img_curtain_rope.setOnTouchListener(this);
+    bezierViewFrameLayout.setOnTouchListener(this);
   }
 
   /**
@@ -127,10 +143,6 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   @Override public void computeScroll() {
     //判断是否还在滚动，还在滚动为true
     if (mScroller.computeScrollOffset()) {
-      if (((int) (img_curtain_rope.getHeight())) >= curtainHeigh - mScroller.getCurrY()) {
-        jellyView.setMinimumHeight((int) curtainHeigh - mScroller.getCurrY());
-        jellyView.invalidate();
-      }
       scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
       //更新界面
       postInvalidate();
@@ -152,11 +164,13 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
         case MotionEvent.ACTION_MOVE:
           moveY = (int) event.getRawY();
           scrollY = moveY - downY;
+          Log.e("hanjiahu", "scrollY=" + scrollY);
           if (scrollY < 0) {
             // 向上滑动
             if (isOpen) {
               if (Math.abs(scrollY) <= img_curtain_ad.getBottom() - offViewY) {
                 scrollTo(0, -scrollY);
+                Log.e("hanjiahu", "scrollTo=" + (-scrollY));
               }
             }
           } else {
@@ -164,11 +178,11 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             if (!isOpen) {
               if (scrollY <= curtainHeigh) {
                 scrollTo(0, curtainHeigh - scrollY);
-                //jellyView.setMinimumHeight((int) (headerHeight));
-                Log.e("hanjiahu", "setJellyHeight=" + scrollY);
+                Log.e("hanjiahu", "scrollTo=" + (curtainHeigh - scrollY));
                 if (((int) (img_curtain_rope.getHeight())) >= scrollY) {
-                  jellyView.setMinimumHeight((int) scrollY);
-                  jellyView.invalidate();
+                  bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight() + (int) scrollY);
+                  Log.d("ttttttttt",""+(tv_curtain_rope.getHeight() + (int) scrollY));
+                  bezierViewFrameLayout.invalidate();
                 }
               }
             }
@@ -183,26 +197,37 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
           if (downY > upY) {
             // 向上滑动
             if (isOpen) {
-              if (Math.abs(scrollY) > curtainHeigh / 2) {
-                // 向上滑动超过半个屏幕高的时候 开启向上消失动画
+              if (Math.abs(scrollY) > touchScrollHeight) {
+                // 向上滑动超过touchScrollHeight的时候 开启向上消失动画
                 startMoveAnim(this.getScrollY(), (curtainHeigh - this.getScrollY()), upDuration);
                 isOpen = false;
+                bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
+                Log.d("ttttttttt向上滑动",""+(tv_curtain_rope.getHeight() ));
+                bezierViewFrameLayout.invalidate();
               } else {
                 startMoveAnim(this.getScrollY(), -this.getScrollY(), upDuration);
                 isOpen = true;
+                bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
+                Log.d("ttttttttt向上滑动",""+(bezierViewFrameLayout.getHeight()));
+                bezierViewFrameLayout.invalidate();
               }
             }
           } else {
             // 向下滑动
-            jellyView.setMinimumHeight(img_curtain_rope.getHeight());
-            jellyView.invalidate();
-            if (scrollY > curtainHeigh / 2) {
-              // 向上滑动超过半个屏幕高的时候 开启向上消失动画
+
+            if (scrollY > touchScrollHeight) {
+              // 向下滑动超过touchScrollHeight的时候 开启向下展开动画
               startMoveAnim(this.getScrollY(), -this.getScrollY(), upDuration);
               isOpen = true;
+              bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
+              Log.d("ttttttttt向下滑动",""+(bezierViewFrameLayout.getHeight()));
+              bezierViewFrameLayout.invalidate();
             } else {
               startMoveAnim(this.getScrollY(), (curtainHeigh - this.getScrollY()), upDuration);
               isOpen = false;
+              bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
+              Log.d("ttttttttt向下滑动",""+(tv_curtain_rope.getHeight() ));
+              bezierViewFrameLayout.invalidate();
             }
           }
           break;
@@ -220,8 +245,14 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
   public void onRopeClick() {
     if (isOpen) {
       CurtainView.this.startMoveAnim(0, curtainHeigh, upDuration);
+      bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
+      Log.d("ttttttttt点击",""+(tv_curtain_rope.getHeight() ));
+      bezierViewFrameLayout.invalidate();
     } else {
       CurtainView.this.startMoveAnim(curtainHeigh, -curtainHeigh, downDuration);
+      bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
+      Log.d("ttttttttt点击下",""+(bezierViewFrameLayout.getHeight()));
+      bezierViewFrameLayout.invalidate();
     }
     isOpen = !isOpen;
   }

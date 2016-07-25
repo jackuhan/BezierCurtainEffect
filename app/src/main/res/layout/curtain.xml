@@ -6,22 +6,38 @@
 
   <com.example.curtaineffect.view.BezierViewFrameLayout
       xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/jelly"
+      android:id="@+id/bezier_layout"
       android:layout_alignParentBottom="true"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       >
 
-    <ImageView
-        android:id="@+id/img_curtain_rope"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:paddingBottom="25dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/iom_live_qb"
-        />
+        android:layout_height="35dp"
+        >
+
+      <TextView
+          android:id="@+id/tv_curtain_rope"
+          android:layout_width="match_parent"
+          android:layout_height="12dp"
+          android:text="全部商品"
+          android:gravity="center_horizontal"
+          android:textColor="#999999"
+          android:textSize="11dp"
+          android:layout_gravity="center_horizontal"
+          />
+
+      <ImageView
+          android:id="@+id/img_curtain_rope"
+          android:layout_below="@+id/tv_curtain_rope"
+          android:layout_width="match_parent"
+          android:layout_height="16dp"
+          android:paddingBottom="5dp"
+          android:scaleType="center"
+          android:src="@drawable/iom_live_qb"
+          />
+    </RelativeLayout>
 
 
   </com.example.curtaineffect.view.BezierViewFrameLayout>
@@ -30,7 +46,7 @@
       android:id="@+id/img_curtain_ad"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_above="@+id/jelly"
+      android:layout_above="@+id/bezier_layout"
       android:background="#99ffaaff"
       android:scaleType="fitXY"
       android:src="@drawable/item2"
