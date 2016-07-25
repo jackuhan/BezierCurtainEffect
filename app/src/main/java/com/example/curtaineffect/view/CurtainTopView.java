@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
@@ -25,7 +25,7 @@ import com.example.curtaineffect.tools.Device;
  * create by Ra blog : http://blog.csdn.net/vipzjyno1/
  * modified by Hanjiahu
  */
-public class CurtainView extends RelativeLayout implements OnTouchListener {
+public class CurtainTopView extends RelativeLayout implements OnTouchListener {
   private static String TAG = "CurtainView";
   private Context mContext;
   private Scroller mScroller;
@@ -63,17 +63,17 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     touchScrollHeight = mTouchScrollHeight;
   }
 
-  public CurtainView(Context context) {
+  public CurtainTopView(Context context) {
     super(context);
     init(context, null);
   }
 
-  public CurtainView(Context context, AttributeSet attrs, int defStyle) {
+  public CurtainTopView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context, attrs);
   }
 
-  public CurtainView(Context context, AttributeSet attrs) {
+  public CurtainTopView(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }
@@ -90,18 +90,19 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
       mJellyColor = getResources().getColor(android.R.color.white);
     }
     //Interpolator 设置为有反弹效果的  （Bounce：反弹）
-    Interpolator interpolator = new BounceInterpolator();
+    Interpolator interpolator = new LinearInterpolator();
     mScroller = new Scroller(context, interpolator);
     mScreenHeigh = BaseTools.getWindowHeigh(context);
     mScreenWidth = BaseTools.getWindowWidth(context);
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
-    final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
+    final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain_top, null);
     img_curtain_ad = (View) view.findViewById(R.id.img_curtain_ad);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
     addView(view);
+
     img_curtain_ad.post(new Runnable() {
 
       @Override public void run() {
@@ -112,7 +113,9 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
             + mScreenHeigh
             + " img_curtain_rope.heigeht="
             + img_curtain_rope.getHeight());
-        CurtainView.this.scrollTo(0, curtainHeigh);
+        // TODO: 16/7/25
+        closeCurtain(0);
+        //CurtainTopView.this.scrollTo(0, curtainHeigh);
         bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
         Log.d("ttttttttt", "" + (tv_curtain_rope.getHeight()));
         bezierViewFrameLayout.setJellyHeight(bezierViewFrameLayout.getHeight());
@@ -120,22 +123,26 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
         //注意scrollBy和scrollTo的区别
       }
     });
-    img_curtain_ad.setOnTouchListener(this);
     bezierViewFrameLayout.setOnTouchListener(this);
+    //bezierViewFrameLayout.setOnClickListener(new OnClickListener() {
+    //  @Override public void onClick(View v) {
+    //    closeCurtain();
+    //  }
+    //});
   }
 
   public void closeCurtain(int mDuration) {
     isOpen = false;
-    CurtainView.this.startMoveAnim(0, curtainHeigh, mDuration );
+    CurtainTopView.this.startMoveAnim(0, curtainHeigh, mDuration);
     //CurtainTopView.this.scrollTo(0, curtainHeigh);
-    //bezierViewFrameLayout.setVisibility(INVISIBLE);
+    bezierViewFrameLayout.setVisibility(INVISIBLE);
   }
 
   public void openCurtain(int mDuration) {
     isOpen = true;
-    CurtainView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
-    //CurtainTopView.this.scrollTo(0, -curtainHeigh);
-    //bezierViewFrameLayout.setVisibility(VISIBLE);
+    CurtainTopView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
+    //CurtainTopView.this.scrollTo(curtainHeigh, -curtainHeigh);
+    bezierViewFrameLayout.setVisibility(VISIBLE);
   }
 
   /**
@@ -148,6 +155,9 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     isMove = true;
     mScroller.startScroll(0, startY, 0, dy, duration);
     invalidate();//通知UI线程的更新
+    if (dy > 0) {
+      bezierViewFrameLayout.setVisibility(INVISIBLE);
+    }
   }
 
   /**
@@ -161,22 +171,10 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
       isOpen = false;
       Log.d("ttttttttt点击", "" + (tv_curtain_rope.getHeight()));
     } else {
-      openCurtain(downDuration);
+      openCurtain(10);
       Log.d("ttttttttt点击下", "" + (bezierViewFrameLayout.getHeight()));
       beserViewOpen();
       isOpen = true;
-    }
-  }
-
-  private void beserViewOpen() {
-    bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
-    bezierViewFrameLayout.invalidate();
-    if(null!=mOnPullDownOffsetListener) {
-      this.postDelayed(new Runnable() {
-        @Override public void run() {
-          mOnPullDownOffsetListener.isOpen(true);
-        }
-      }, upDuration);
     }
   }
 
@@ -250,7 +248,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                 isOpen = false;
                 beserViewClose();
                 Log.d("ttttttttt向上滑动", "" + (tv_curtain_rope.getHeight()));
-                if(null!=mOnPullDownOffsetListener) {
+                if (null != mOnPullDownOffsetListener) {
                   this.postDelayed(new Runnable() {
                     @Override public void run() {
                       mOnPullDownOffsetListener.isOpen(false);
@@ -262,7 +260,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                 isOpen = true;
                 beserViewOpen();
                 Log.d("ttttttttt向上滑动", "" + (bezierViewFrameLayout.getHeight()));
-                if(null!=mOnPullDownOffsetListener) {
+                if (null != mOnPullDownOffsetListener) {
                   this.postDelayed(new Runnable() {
                     @Override public void run() {
                       mOnPullDownOffsetListener.isOpen(true);
@@ -285,7 +283,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                   @Override public void run() {
                     mOnPullDownOffsetListener.isOpen(true);
                   }
-                },upDuration);
+                }, upDuration);
               }
             } else {
               startMoveAnim(this.getScrollY(), (curtainHeigh - this.getScrollY()), upDuration);
@@ -298,7 +296,7 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
                   @Override public void run() {
                     mOnPullDownOffsetListener.isOpen(false);
                   }
-                },upDuration);
+                }, upDuration);
               }
             }
           }
@@ -310,10 +308,22 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     return false;
   }
 
+  private void beserViewOpen() {
+    bezierViewFrameLayout.setMinimumHeight(bezierViewFrameLayout.getHeight());
+    bezierViewFrameLayout.invalidate();
+    if (null != mOnPullDownOffsetListener) {
+      this.postDelayed(new Runnable() {
+        @Override public void run() {
+          mOnPullDownOffsetListener.isOpen(true);
+        }
+      }, upDuration);
+    }
+  }
+
   private void beserViewClose() {
     bezierViewFrameLayout.setMinimumHeight(tv_curtain_rope.getHeight());
     bezierViewFrameLayout.invalidate();
-    if(null!=mOnPullDownOffsetListener) {
+    if (null != mOnPullDownOffsetListener) {
       this.postDelayed(new Runnable() {
         @Override public void run() {
           mOnPullDownOffsetListener.isOpen(false);
@@ -322,14 +332,15 @@ public class CurtainView extends RelativeLayout implements OnTouchListener {
     }
   }
 
-  public interface OnPullDownOffsetListener {
+  public interface OnOutCurtainListener {
     void onPullDownOffset(float offset);
+
     void isOpen(boolean bOpen);
   }
 
-  private OnPullDownOffsetListener mOnPullDownOffsetListener;
+  private OnOutCurtainListener mOnPullDownOffsetListener;
 
-  public void setOnPullDownOffsetListener(OnPullDownOffsetListener onPullDownOffsetListener) {
+  public void setOnOutCurtainListener(OnOutCurtainListener onPullDownOffsetListener) {
     mOnPullDownOffsetListener = onPullDownOffsetListener;
   }
 }

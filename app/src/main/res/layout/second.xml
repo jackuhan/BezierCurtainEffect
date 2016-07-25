@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <include
+      layout="@layout/main_head"
+      android:id="@+id/layout_main_head"
+      />
+
+  <com.example.curtaineffect.view.OutCurtainLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/layout_main_head"
+      />
+
+</RelativeLayout>

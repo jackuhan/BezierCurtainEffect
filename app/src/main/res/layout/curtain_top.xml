@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+  <com.example.curtaineffect.view.BezierViewFrameLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/bezier_layout"
+      android:layout_alignParentBottom="true"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        >
+
+      <ImageView
+          android:id="@+id/img_curtain_rope"
+          android:layout_width="match_parent"
+          android:layout_height="12dp"
+          android:scaleType="center"
+          android:src="@drawable/iom_live_qb"
+          />
+
+      <TextView
+          android:id="@+id/tv_curtain_rope"
+          android:layout_below="@+id/img_curtain_rope"
+          android:layout_width="match_parent"
+          android:layout_height="16dp"
+          android:paddingBottom="5dp"
+          android:text="收起商品"
+          android:gravity="center_horizontal"
+          android:textColor="#999999"
+          android:textSize="11dp"
+          android:layout_gravity="center_horizontal"
+          />
+
+
+    </RelativeLayout>
+
+
+  </com.example.curtaineffect.view.BezierViewFrameLayout>
+
+  <ImageView
+      android:id="@+id/img_curtain_ad"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/bezier_layout"
+      android:background="#99ffaaff"
+      android:scaleType="fitXY"
+      android:src="@drawable/haibao2"
+      />
+
+
+</RelativeLayout>

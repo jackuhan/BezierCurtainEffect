@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+  <ImageView
+      android:id="@+id/header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/layout_main_head"
+      android:scaleType="fitXY"
+      android:src="@drawable/gg1"
+      />
+
+  <com.example.curtaineffect.view.CurtainView
+      android:id="@+id/curtain_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/header"
+      />
+
+  <com.example.curtaineffect.view.CurtainTopView
+      android:id="@+id/curtain_top_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+
+  <!--<RelativeLayout-->
+      <!--android:id="@+id/goods_layout"-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="match_parent"-->
+      <!--android:layout_marginBottom="35dp"-->
+      <!--android:background="#000fff"-->
+      <!--android:visibility="gone"-->
+      <!--&gt;-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="商品详情页面"-->
+        <!--android:textColor="#ffffff"-->
+        <!--/>-->
+
+  <!--</RelativeLayout>-->
+
+</RelativeLayout>

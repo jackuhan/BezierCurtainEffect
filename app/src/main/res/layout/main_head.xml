@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header_layout"
     android:layout_width="match_parent"
     android:layout_height="50dip"
     android:background="#49c6db" >
@@ -12,6 +13,14 @@
         android:layout_margin="5dip"
         android:layout_marginLeft="10dip"
         android:src="@drawable/button_weixin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击跳转到下一个页面"
+        android:layout_centerInParent="true"
+        android:textColor="#ffffff"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
