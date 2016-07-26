@@ -22,7 +22,7 @@
           android:layout_width="match_parent"
           android:layout_height="12dp"
           android:scaleType="center"
-          android:src="@drawable/iom_live_qb"
+          android:src="@drawable/iom_sale_back"
           />
 
       <TextView

@@ -139,6 +139,7 @@ public class CurtainTopView extends RelativeLayout implements OnTouchListener {
 
   public void openCurtain(int mDuration) {
     isOpen = true;
+    beserViewOpen();
     CurtainTopView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
     bezierViewFrameLayout.setVisibility(VISIBLE);
   }

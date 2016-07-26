@@ -49,7 +49,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
   public ImageView img_curtain_rope;
   public TextView tv_curtain_rope;
   /** 广告的图片 */
-  public View img_curtain_ad;
+  public View noting_view;
   /** 上升动画时间 */
   public int upDuration = 1000;
   /** 下落动画时间 */
@@ -97,15 +97,15 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = getView();
-    img_curtain_ad = (View) view.findViewById(R.id.curtain_gooods_layout);
+    noting_view = (View) view.findViewById(R.id.curtain_gooods_layout);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
     addView(view);
-    img_curtain_ad.post(new Runnable() {
+    noting_view.post(new Runnable() {
 
       @Override public void run() {
-        curtainHeigh = img_curtain_ad.getHeight();
+        curtainHeigh = noting_view.getHeight();
         Log.d(TAG, "curtainHeigh= "
             + curtainHeigh
             + " mScreenHeigh="
@@ -120,7 +120,6 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
         //注意scrollBy和scrollTo的区别
       }
     });
-    img_curtain_ad.setOnTouchListener(this);
     bezierViewFrameLayout.setOnTouchListener(this);
   }
 
@@ -224,7 +223,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
           if (scrollY < 0) {
             // 向上滑动
             if (isOpen) {
-              if (Math.abs(scrollY) <= img_curtain_ad.getBottom() - offViewY) {
+              if (Math.abs(scrollY) <= noting_view.getBottom() - offViewY) {
                 scrollTo(0, -scrollY);
                 Log.e("hanjiahu", "scrollTo=" + (-scrollY));
               }
