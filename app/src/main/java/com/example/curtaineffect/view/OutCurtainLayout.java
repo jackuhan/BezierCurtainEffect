@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.example.curtaineffect.R;
 
@@ -18,10 +17,9 @@ import com.example.curtaineffect.R;
 public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.OnPullDownOffsetListener {
   private static String TAG = "CurtainView";
   private Context mContext;
-  private ImageView header;
+  private View promotionHeader;
   private CurtainDownView curtainView;
   private CurtainTopView curtainTopView;
-  //private RelativeLayout goodsLayout;
 
   public OutCurtainLayout(Context context) {
     super(context);
@@ -48,7 +46,7 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = LayoutInflater.from(mContext).inflate(R.layout.out_curtain, null);
-    header = (ImageView) view.findViewById(R.id.header);
+    promotionHeader = (View) view.findViewById(R.id.promotion_header);
     curtainView = (CurtainDownView) view.findViewById(R.id.curtain_view);
     curtainTopView = (CurtainTopView) view.findViewById(R.id.curtain_top_view);
     addView(view);
@@ -61,32 +59,34 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
       @Override public void isOpen(boolean bOpen) {
         Log.w("上层窗帘回调","isOpen= "+bOpen);
         if(bOpen){
-          //header.setVisibility(GONE);
-          //curtainTopView.openCurtain(10);
         } else {
-          //header.setVisibility(VISIBLE);
           curtainView.closeCurtain(10);
         }
       }
     });
-    view.findViewById(R.id.header).setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        curtainTopView.openCurtain(500);
-      }
-    });
+  }
+
+  //设置底层头部内容
+  public void setCurtainGoodsLayout(View curtainGoodsLayout) {
+    curtainTopView.setCurtainGoodsLayout(curtainGoodsLayout);
+  }
+
+  //设置上层内容区域
+  public void setPromotionHeader(View promotionHeader) {
+    this.promotionHeader = promotionHeader;
   }
 
   public void onPullDownOffset(float offset) {
     Log.e("onPullDownOffset","offset= "+offset+" alpha="+(255- 255*offset/CurtainDownView.touchScrollHeight));
     if (offset >= CurtainDownView.touchScrollHeight) {
-      header.setVisibility(GONE);
-      header.setAlpha(255);
+      promotionHeader.setVisibility(GONE);
+      promotionHeader.setAlpha(1f);
     } else if (offset <= 0) {
-      header.setVisibility(VISIBLE);
-      header.setAlpha(255);
+      promotionHeader.setVisibility(VISIBLE);
+      promotionHeader.setAlpha(1f);
     } else {
-      header.setVisibility(VISIBLE);
-      header.setAlpha((int)(255- 255*offset/CurtainDownView.touchScrollHeight));
+      promotionHeader.setVisibility(VISIBLE);
+      promotionHeader.setAlpha((float) (255- 255*offset/CurtainDownView.touchScrollHeight)/255);
     }
   }
 
@@ -94,11 +94,11 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
     Log.e("下层窗帘回调","isOpen= "+bOpen);
     if(bOpen){
       curtainTopView.openCurtain(10);
-      header.setVisibility(VISIBLE);
-      header.setAlpha(255);
+      promotionHeader.setVisibility(VISIBLE);
+      promotionHeader.setAlpha(255);
     } else {
-      header.setVisibility(VISIBLE);
-      header.setAlpha(255);
+      promotionHeader.setVisibility(VISIBLE);
+      promotionHeader.setAlpha(255);
     }
   }
 }

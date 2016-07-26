@@ -45,7 +45,7 @@
   </com.example.curtaineffect.view.BezierViewFrameLayout>
 
   <ImageView
-      android:id="@+id/img_curtain_ad"
+      android:id="@+id/curtain_gooods_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/bezier_layout"

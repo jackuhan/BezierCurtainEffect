@@ -96,8 +96,8 @@ public class CurtainNormalView extends RelativeLayout implements OnTouchListener
     mScreenWidth = BaseTools.getWindowWidth(context);
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
-    final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
-    img_curtain_ad = (View) view.findViewById(R.id.img_curtain_ad);
+    final View view = getView();
+    img_curtain_ad = (View) view.findViewById(R.id.curtain_gooods_layout);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
@@ -124,16 +124,18 @@ public class CurtainNormalView extends RelativeLayout implements OnTouchListener
     bezierViewFrameLayout.setOnTouchListener(this);
   }
 
+  private View getView() {
+    return LayoutInflater.from(mContext).inflate(R.layout.curtain_down, null);
+  }
+
   public void closeCurtain(int mDuration) {
     isOpen = false;
     CurtainNormalView.this.startMoveAnim(0, curtainHeigh, mDuration );
-    //CurtainTopView.this.scrollTo(0, curtainHeigh);
   }
 
   public void openCurtain(int mDuration) {
     isOpen = true;
     CurtainNormalView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
-    //CurtainTopView.this.scrollTo(0, -curtainHeigh);
   }
 
   /**

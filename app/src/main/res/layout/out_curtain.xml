@@ -5,7 +5,7 @@
 
 
   <ImageView
-      android:id="@+id/header"
+      android:id="@+id/promotion_header"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@+id/layout_main_head"
@@ -17,7 +17,7 @@
       android:id="@+id/curtain_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@id/header"
+      android:layout_below="@id/promotion_header"
       />
 
   <com.example.curtaineffect.view.CurtainTopView
@@ -25,24 +25,5 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
-
-
-  <!--<RelativeLayout-->
-      <!--android:id="@+id/goods_layout"-->
-      <!--android:layout_width="match_parent"-->
-      <!--android:layout_height="match_parent"-->
-      <!--android:layout_marginBottom="35dp"-->
-      <!--android:background="#000fff"-->
-      <!--android:visibility="gone"-->
-      <!--&gt;-->
-
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="商品详情页面"-->
-        <!--android:textColor="#ffffff"-->
-        <!--/>-->
-
-  <!--</RelativeLayout>-->
 
 </RelativeLayout>

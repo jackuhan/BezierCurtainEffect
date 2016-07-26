@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -27,36 +26,36 @@ import com.example.curtaineffect.tools.Device;
  * modified by Hanjiahu
  */
 public class CurtainDownView extends RelativeLayout implements OnTouchListener {
-  private static String TAG = "CurtainView";
-  private Context mContext;
-  private Scroller mScroller;
-  private int mScreenHeigh = 0;
-  private int mScreenWidth = 0;
+  public static String TAG = "CurtainView";
+  public Context mContext;
+  public Scroller mScroller;
+  public int mScreenHeigh = 0;
+  public int mScreenWidth = 0;
   /** 点击时候Y的坐标 */
-  private int downY = 0;
+  public int downY = 0;
   /** 拖动时候Y的坐标 */
-  private int moveY = 0;
+  public int moveY = 0;
   /** 拖动时候Y的方向距离 */
-  private int scrollY = 0;
+  public int scrollY = 0;
   /** 松开时候Y的坐标 */
-  private int upY = 0;
+  public int upY = 0;
   /** 广告幕布的高度 */
-  private int curtainHeigh = 0;
+  public int curtainHeigh = 0;
   /** 是否 打开 */
-  private boolean isOpen = false;
+  public boolean isOpen = false;
   /** 是否在动画 */
-  private boolean isMove = false;
+  public boolean isMove = false;
   /** 绳子的图片 */
-  private ImageView img_curtain_rope;
-  private TextView tv_curtain_rope;
+  public ImageView img_curtain_rope;
+  public TextView tv_curtain_rope;
   /** 广告的图片 */
-  private View img_curtain_ad;
+  public View img_curtain_ad;
   /** 上升动画时间 */
-  private int upDuration = 1000;
+  public int upDuration = 1000;
   /** 下落动画时间 */
-  private int downDuration = 500;
-  BezierViewFrameLayout bezierViewFrameLayout;
-  private int mJellyColor;
+  public int downDuration = 500;
+  public BezierViewFrameLayout bezierViewFrameLayout;
+  public int mJellyColor;
   //拖动150像素有效滑动
   public static float touchScrollHeight = 150;
 
@@ -97,8 +96,8 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     mScreenWidth = BaseTools.getWindowWidth(context);
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
-    final View view = LayoutInflater.from(mContext).inflate(R.layout.curtain, null);
-    img_curtain_ad = (View) view.findViewById(R.id.img_curtain_ad);
+    final View view = getView();
+    img_curtain_ad = (View) view.findViewById(R.id.curtain_gooods_layout);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
@@ -125,18 +124,20 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     bezierViewFrameLayout.setOnTouchListener(this);
   }
 
+  private View getView() {
+    return LayoutInflater.from(mContext).inflate(R.layout.curtain_down, null);
+  }
+
   public void closeCurtain(int mDuration) {
     isOpen = false;
     beserViewClose();
     CurtainDownView.this.startMoveAnim(0, curtainHeigh, mDuration );
-    //CurtainTopView.this.scrollTo(0, curtainHeigh);
     bezierViewFrameLayout.setVisibility(VISIBLE);
   }
 
   public void openCurtain(int mDuration) {
     isOpen = true;
     CurtainDownView.this.startMoveAnim(curtainHeigh, -curtainHeigh, mDuration);
-    //CurtainTopView.this.scrollTo(0, -curtainHeigh);
     bezierViewFrameLayout.setVisibility(INVISIBLE);
   }
 
@@ -153,7 +154,6 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     if (dy > 0) {
       //关闭
       if (null != mOnPullDownOffsetListener) {
-        //mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
             bezierViewFrameLayout.setVisibility(VISIBLE);
@@ -163,9 +163,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
       }
     } else {
       //打开
-
       if (null != mOnPullDownOffsetListener) {
-        //mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
             bezierViewFrameLayout.setVisibility(INVISIBLE);
@@ -223,9 +221,6 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
           moveY = (int) event.getRawY();
           scrollY = moveY - downY;
           Log.e("hanjiahu", "scrollY=" + scrollY);
-          //if (null != mOnPullDownOffsetListener) {
-          //  mOnPullDownOffsetListener.onPullDownOffset(scrollY);
-          //}
           if (scrollY < 0) {
             // 向上滑动
             if (isOpen) {
@@ -237,11 +232,9 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
           } else {
             // 向下滑动
             if (!isOpen) {
-
               if (null != mOnPullDownOffsetListener) {
                 mOnPullDownOffsetListener.onPullDownOffset(scrollY);
               }
-
               if (scrollY <= curtainHeigh) {
                 scrollTo(0, curtainHeigh - scrollY);
                 Log.e("hanjiahu", "scrollTo=" + (curtainHeigh - scrollY));
