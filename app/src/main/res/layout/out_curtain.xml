@@ -4,12 +4,12 @@
     >
 
 
-  <ImageView
+  <LinearLayout
       android:id="@+id/promotion_header"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scaleType="fitXY"
-      android:src="@drawable/gg1"
+      android:layout_height="63dp"
+      android:background="#1f2fff"
+      android:orientation="vertical"
       />
 
   <com.example.curtaineffect.view.CurtainDownView

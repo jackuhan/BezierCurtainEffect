@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.example.curtaineffect.R;
 
@@ -17,7 +18,7 @@ import com.example.curtaineffect.R;
 public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.OnPullDownOffsetListener {
   private static String TAG = "CurtainView";
   private Context mContext;
-  private View promotionHeader;
+  private LinearLayout promotionHeader;
   private CurtainDownView curtainView;
   private CurtainTopView curtainTopView;
 
@@ -46,7 +47,7 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = LayoutInflater.from(mContext).inflate(R.layout.out_curtain, null);
-    promotionHeader = (View) view.findViewById(R.id.promotion_header);
+    promotionHeader = (LinearLayout) view.findViewById(R.id.promotion_header);
     curtainView = (CurtainDownView) view.findViewById(R.id.curtain_view);
     curtainTopView = (CurtainTopView) view.findViewById(R.id.curtain_top_view);
     addView(view);
@@ -73,7 +74,7 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
 
   //设置上层内容区域
   public void setPromotionHeader(View promotionHeader) {
-    this.promotionHeader = promotionHeader;
+    this.promotionHeader.addView(promotionHeader);
   }
 
   public void onPullDownOffset(float offset) {
@@ -95,10 +96,10 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
     if(bOpen){
       curtainTopView.openCurtain(10);
       promotionHeader.setVisibility(VISIBLE);
-      promotionHeader.setAlpha(255);
+      promotionHeader.setAlpha(1);
     } else {
       promotionHeader.setVisibility(VISIBLE);
-      promotionHeader.setAlpha(255);
+      promotionHeader.setAlpha(1);
     }
   }
 }
