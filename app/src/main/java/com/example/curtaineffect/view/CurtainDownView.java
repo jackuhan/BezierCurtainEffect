@@ -97,7 +97,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = getView();
-    noting_view = (View) view.findViewById(R.id.curtain_gooods_layout);
+    noting_view = (View) view.findViewById(R.id.noting_view);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);

@@ -5,16 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import com.example.curtaineffect.view.OutCurtainLayout;
 
 public class SecondActivity extends Activity {
+
+	private OutCurtainLayout outCurtainLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.second);
+		outCurtainLayout = (OutCurtainLayout)findViewById(R.id.out_curtain_layout);
 		initView();
 	}
 
 	private void initView() {
+		// TODO: 16/7/26
+		//outCurtainLayout.setPromotionHeader();
+		//outCurtainLayout.setCurtainGoodsLayout();
 	}
 
 	@Override

@@ -9,6 +9,7 @@
       />
 
   <com.example.curtaineffect.view.OutCurtainLayout
+      android:id="@+id/out_curtain_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/layout_main_head"

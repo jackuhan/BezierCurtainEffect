@@ -43,14 +43,13 @@
 
   </com.example.curtaineffect.view.BezierViewFrameLayout>
 
-  <ImageView
-      android:id="@+id/curtain_gooods_layout"
+  <LinearLayout
+      android:id="@+id/curtain_goods_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/bezier_layout"
       android:background="#99ffaaff"
-      android:scaleType="fitXY"
-      android:src="@drawable/haibao2"
+      android:orientation="vertical"
       />
 
 

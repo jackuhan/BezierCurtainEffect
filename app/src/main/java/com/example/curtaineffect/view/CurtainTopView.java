@@ -12,6 +12,7 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class CurtainTopView extends RelativeLayout implements OnTouchListener {
   private ImageView img_curtain_rope;
   private TextView tv_curtain_rope;
   /** 广告的图片 */
-  private View curtainGoodsLayout;
+  private LinearLayout curtainGoodsLayout;
   /** 上升动画时间 */
   private int upDuration = 1000;
   /** 下落动画时间 */
@@ -97,7 +98,7 @@ public class CurtainTopView extends RelativeLayout implements OnTouchListener {
     // 背景设置成透明
     this.setBackgroundColor(Color.argb(0, 0, 0, 0));
     final View view = getView();
-    curtainGoodsLayout = (View) view.findViewById(R.id.curtain_gooods_layout);
+    curtainGoodsLayout = (LinearLayout) view.findViewById(R.id.curtain_goods_layout);
     img_curtain_rope = (ImageView) view.findViewById(R.id.img_curtain_rope);
     tv_curtain_rope = (TextView) view.findViewById(R.id.tv_curtain_rope);
     bezierViewFrameLayout = (BezierViewFrameLayout) view.findViewById(R.id.bezier_layout);
@@ -124,7 +125,7 @@ public class CurtainTopView extends RelativeLayout implements OnTouchListener {
   }
 
   public void setCurtainGoodsLayout(View curtainGoodsLayout) {
-    this.curtainGoodsLayout = curtainGoodsLayout;
+    this.curtainGoodsLayout.addView(curtainGoodsLayout);
   }
 
   private View getView() {
