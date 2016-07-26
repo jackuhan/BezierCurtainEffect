@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
@@ -90,7 +91,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
       mJellyColor = getResources().getColor(android.R.color.white);
     }
     //Interpolator 设置为有反弹效果的  （Bounce：反弹）
-    Interpolator interpolator = new BounceInterpolator();
+    Interpolator interpolator = new LinearInterpolator();
     mScroller = new Scroller(context, interpolator);
     mScreenHeigh = BaseTools.getWindowHeigh(context);
     mScreenWidth = BaseTools.getWindowWidth(context);
@@ -126,6 +127,7 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
 
   public void closeCurtain(int mDuration) {
     isOpen = false;
+    beserViewClose();
     CurtainDownView.this.startMoveAnim(0, curtainHeigh, mDuration );
     //CurtainTopView.this.scrollTo(0, curtainHeigh);
     bezierViewFrameLayout.setVisibility(VISIBLE);
@@ -150,22 +152,23 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
     invalidate();//通知UI线程的更新
     if (dy > 0) {
       //关闭
-      bezierViewFrameLayout.setVisibility(VISIBLE);
       if (null != mOnPullDownOffsetListener) {
-        mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
+        //mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
+            bezierViewFrameLayout.setVisibility(VISIBLE);
             mOnPullDownOffsetListener.isOpen(false);
           }
         },downDuration);
       }
     } else {
       //打开
-      bezierViewFrameLayout.setVisibility(INVISIBLE);
+
       if (null != mOnPullDownOffsetListener) {
-        mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
+        //mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
+            bezierViewFrameLayout.setVisibility(INVISIBLE);
             mOnPullDownOffsetListener.isOpen(true);
           }
         },downDuration);
@@ -220,9 +223,9 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
           moveY = (int) event.getRawY();
           scrollY = moveY - downY;
           Log.e("hanjiahu", "scrollY=" + scrollY);
-          if (null != mOnPullDownOffsetListener) {
-            mOnPullDownOffsetListener.onPullDownOffset(scrollY);
-          }
+          //if (null != mOnPullDownOffsetListener) {
+          //  mOnPullDownOffsetListener.onPullDownOffset(scrollY);
+          //}
           if (scrollY < 0) {
             // 向上滑动
             if (isOpen) {
@@ -234,6 +237,11 @@ public class CurtainDownView extends RelativeLayout implements OnTouchListener {
           } else {
             // 向下滑动
             if (!isOpen) {
+
+              if (null != mOnPullDownOffsetListener) {
+                mOnPullDownOffsetListener.onPullDownOffset(scrollY);
+              }
+
               if (scrollY <= curtainHeigh) {
                 scrollTo(0, curtainHeigh - scrollY);
                 Log.e("hanjiahu", "scrollTo=" + (curtainHeigh - scrollY));

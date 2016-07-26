@@ -77,29 +77,28 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
   }
 
   public void onPullDownOffset(float offset) {
-    Log.e("onPullDownOffset","offset= "+offset);
-    //if (offset >= CurtainView.touchScrollHeight) {
-    //  header.setVisibility(GONE);
-    //  goodsLayout.setVisibility(VISIBLE);
-    //  header.setAlpha(255);
-    //} else if (offset <= 0) {
-    //  header.setVisibility(VISIBLE);
-    //  goodsLayout.setVisibility(GONE);
-    //  header.setAlpha(255);
-    //} else {
-    //  //header.setVisibility(VISIBLE);
-    //  //goodsLayout.setVisibility(GONE);
-    //  //header.setAlpha((int)(255*offset/CurtainView.touchScrollHeight));
-    //}
+    Log.e("onPullDownOffset","offset= "+offset+" alpha="+(255- 255*offset/CurtainDownView.touchScrollHeight));
+    if (offset >= CurtainDownView.touchScrollHeight) {
+      header.setVisibility(GONE);
+      header.setAlpha(255);
+    } else if (offset <= 0) {
+      header.setVisibility(VISIBLE);
+      header.setAlpha(255);
+    } else {
+      header.setVisibility(VISIBLE);
+      header.setAlpha((int)(255- 255*offset/CurtainDownView.touchScrollHeight));
+    }
   }
 
   public void isOpen(boolean bOpen){
     Log.e("下层窗帘回调","isOpen= "+bOpen);
     if(bOpen){
-      //header.setVisibility(GONE);
       curtainTopView.openCurtain(10);
+      header.setVisibility(VISIBLE);
+      header.setAlpha(255);
     } else {
-      //header.setVisibility(VISIBLE);
+      header.setVisibility(VISIBLE);
+      header.setAlpha(255);
     }
   }
 }

@@ -47,10 +47,9 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/bezier_layout"
-      android:background="#99ffaaff"
+      android:background="#ffffff"
       android:scaleType="fitXY"
-      android:src="@drawable/item2"
       />
-
+  <!--android:src="@drawable/item2"-->
 
 </RelativeLayout>

@@ -152,22 +152,22 @@ public class CurtainTopView extends RelativeLayout implements OnTouchListener {
     invalidate();//通知UI线程的更新
     if (dy > 0) {
       //关闭
-      bezierViewFrameLayout.setVisibility(INVISIBLE);
       if (null != mOnPullDownOffsetListener) {
         mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
+            bezierViewFrameLayout.setVisibility(INVISIBLE);
             mOnPullDownOffsetListener.isOpen(false);
           }
         },10);
       }
     } else {
       //打开
-      bezierViewFrameLayout.setVisibility(VISIBLE);
       if (null != mOnPullDownOffsetListener) {
         mOnPullDownOffsetListener.onPullDownOffset(touchScrollHeight);
         this.postDelayed(new Runnable() {
           @Override public void run() {
+            bezierViewFrameLayout.setVisibility(VISIBLE);
             mOnPullDownOffsetListener.isOpen(true);
           }
         },10);
