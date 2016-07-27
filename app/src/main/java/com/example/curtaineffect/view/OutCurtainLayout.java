@@ -97,6 +97,7 @@ public class OutCurtainLayout extends RelativeLayout implements CurtainDownView.
       curtainTopView.openCurtain(10);
       promotionHeader.setVisibility(VISIBLE);
       promotionHeader.setAlpha(1);
+      curtainView.closeCurtain(10);
     } else {
       promotionHeader.setVisibility(VISIBLE);
       promotionHeader.setAlpha(1);
